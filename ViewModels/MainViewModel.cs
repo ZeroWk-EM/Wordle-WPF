@@ -26,6 +26,8 @@ namespace WordleWPF.ViewModel
         private string? _path;
         private string? _winnerWord;
         private List<AttemptViewModel>? _attempts;
+        private List<char> _wrongPositionChar;
+        private List<char> _missingPositionChar;
         private string? _wordAttempt;
         private readonly Stopwatch _stopwatch;
         private readonly Timer _interval;
@@ -40,6 +42,8 @@ namespace WordleWPF.ViewModel
         {
             RestartGameCommand = new DelegateCommand(RestarGame);
             VerifyWordCommand = new DelegateCommand(VerifyWord);
+            _wrongPositionChar = new();
+            _missingPositionChar = new();
             _stopwatch = new Stopwatch();
             _interval = new Timer(1000);
             _interval.Elapsed += TimerElapsed;
@@ -111,6 +115,35 @@ namespace WordleWPF.ViewModel
                 }
             }
         }
+
+        public List<char> WrongPositionChar
+        {
+            get
+            {
+                return new List<char>(_wrongPositionChar);
+            }
+            set
+            {
+                if (value != _wrongPositionChar)
+                {
+                    _wrongPositionChar = value;
+                }
+            }
+        }
+        public List<char> MissingPositionChar
+        {
+            get
+            {
+                return new List<char>(_missingPositionChar);
+            }
+            set
+            {
+                if (value != _missingPositionChar)
+                {
+                    _missingPositionChar = value;
+                }
+            }
+        }
         #endregion
 
         #region Metodi
@@ -175,9 +208,16 @@ namespace WordleWPF.ViewModel
 
                     // Prendo la lista di posizioni del turno corrente e li salvo in una lista
                     List<Position> currentPositionAttempt = gm.GameBoard[_currentAttempt].Positions.ToList();
- 
+
                     // Mando la parola e la lista al ViewModel dell' attempt
                     attempt.SetViewCharacter(WordAttempt, currentPositionAttempt);
+
+                    // Caricare la lista dei caratteri
+                    _wrongPositionChar.AddRange(attempt.WrongPositionChar);
+                    _missingPositionChar.AddRange(attempt.MissingPositionChar);
+
+                    OnPropertyChanged(nameof(WrongPositionChar));
+                    OnPropertyChanged(nameof(MissingPositionChar));
 
                     //Aggiorno la View
                     OnPropertyChanged(nameof(Attempts));
@@ -230,10 +270,14 @@ namespace WordleWPF.ViewModel
             CreateList(MaxAttempt);
             WordAttempt = null;
             _currentAttempt = 0;
+            _wrongPositionChar.Clear();
+            _missingPositionChar.Clear();
             OnPropertyChanged(nameof(WinnerWord));
             OnPropertyChanged(nameof(WordLen));
             OnPropertyChanged(nameof(Attempts));
             OnPropertyChanged(nameof(WordAttempt));
+            OnPropertyChanged(nameof(WrongPositionChar));
+            OnPropertyChanged(nameof(MissingPositionChar));
             _logger.Info("Info - game successfully restarted");
         }
 
