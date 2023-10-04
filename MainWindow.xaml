@@ -232,102 +232,54 @@
                                 Foreground="White">
                                 LETTERE PRESENTI
                             </Label>
-                            <StackPanel Orientation="Horizontal">
-                                <Border
-                                    Margin="0,0,10,0"
-                                    Background="#CBAE45"
-                                    BorderThickness="5"
-                                    CornerRadius="4">
-                                    <Label
-                                        Content="A"
-                                        FontWeight="Bold"
-                                        Foreground="white" />
-                                </Border>
-                                <Border
-                                    Margin="0,0,10,0"
-                                    Background="#CBAE45"
-                                    BorderThickness="5"
-                                    CornerRadius="4">
-                                    <Label
-                                        Content="L"
-                                        FontWeight="Bold"
-                                        Foreground="white" />
-                                </Border>
-                                <Border
-                                    Margin="0,0,10,0"
-                                    Background="#CBAE45"
-                                    BorderThickness="5"
-                                    CornerRadius="4">
-                                    <Label
-                                        Content="S"
-                                        FontWeight="Bold"
-                                        Foreground="white" />
-                                </Border>
-                            </StackPanel>
+
+                            <ItemsControl ItemsSource="{Binding WrongPositionChar}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border
+                                        Margin="0,0,10,0"
+                                        Background="#FFEE70"
+                                        BorderThickness="5"
+                                        CornerRadius="4">
+                                            <Label
+                                            FontWeight="Bold"
+                                             Content="{Binding}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                             <Label
                                 FontSize="15"
                                 FontWeight="Bold"
                                 Foreground="White">
                                 LETTERE NON PRESENTI
                             </Label>
-                            <StackPanel Orientation="Horizontal">
-                                <Border
-                                    Margin="0,0,10,0"
-                                    Background="#7E7E7B"
-                                    BorderThickness="2"
-                                    CornerRadius="4">
-                                    <Label
-                                        Content="K"
-                                        FontWeight="Bold"
-                                        Foreground="white" />
-                                </Border>
-                                <Border
-                                    Margin="0,0,10,0"
-                                    Background="#7E7E7B"
-                                    BorderThickness="2"
-                                    CornerRadius="4">
-                                    <Label
-                                        Content="B"
-                                        FontWeight="Bold"
-                                        Foreground="white" />
-                                </Border>
-                                <Border
-                                    Margin="0,0,10,0"
-                                    Background="#7E7E7B"
-                                    BorderThickness="2"
-                                    CornerRadius="4">
-                                    <Label
-                                        Content="D"
-                                        FontWeight="Bold"
-                                        Foreground="white" />
-                                </Border>
-                                <Border
-                                    Margin="0,0,10,0"
-                                    Background="#7E7E7B"
-                                    BorderThickness="2"
-                                    CornerRadius="4">
-                                    <Label
-                                        Content="X"
-                                        FontWeight="Bold"
-                                        Foreground="white" />
-                                </Border>
-                            </StackPanel>
-                            <Label
-                                FontSize="40"
-                                FontWeight="Bold"
-                                Foreground="White">
-                                DEGUB
-                            </Label>
-                            <StackPanel Orientation="Horizontal">
-                                <Label
-                                    VerticalAlignment="Center"
-                                    Content="PAROLA CORRENTE"
-                                    Foreground="White" />
-                                <Label
-                                    VerticalAlignment="Center"
-                                    Content="{Binding WinnerWord}"
-                                    Foreground="White" />
-                            </StackPanel>
+                            <ItemsControl ItemsSource="{Binding MissingPositionChar}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border
+                                         Margin="0,0,10,0"
+                                         Background="#E66760"
+                                         BorderThickness="5"
+                                         CornerRadius="4">
+                                            <Label
+                                             FontWeight="Bold"
+                                            
+                                             Content="{Binding}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </StackPanel>
                     </Border>
                 </Grid>
