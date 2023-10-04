@@ -21,8 +21,8 @@ namespace WordleWPF.ViewModel
         Logic? gm;
         public event PropertyChangedEventHandler? PropertyChanged;
         private static Logger _logger = LogManager.GetCurrentClassLogger();
-        public const int MaxAttempt = 6;
         private int _currentAttempt = 0;
+        private const int _maxAttempt = 6;
         private string? _path;
         private string? _winnerWord;
         private List<AttemptViewModel>? _attempts;
@@ -40,7 +40,7 @@ namespace WordleWPF.ViewModel
         #region Costruttore
         public MainViewModel()
         {
-            RestartGameCommand = new DelegateCommand(RestarGame);
+            RestartGameCommand = new DelegateCommand(RestartGame);
             VerifyWordCommand = new DelegateCommand(VerifyWord);
             _wrongPositionChar = new();
             _missingPositionChar = new();
@@ -111,7 +111,7 @@ namespace WordleWPF.ViewModel
                 if (_point != value)
                 {
                     _point = value;
-                    OnPropertyChanged(nameof(Point));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -172,7 +172,7 @@ namespace WordleWPF.ViewModel
                         gm = new Logic(wordlist);
                         WinnerWord = gm.ChooseRandomWord();
                         _logger.Info("Info - game successfully initialized");
-                        CreateList(MaxAttempt);
+                        CreateList(_maxAttempt);
                     }
                 }
                 catch (Exception e)
@@ -189,7 +189,7 @@ namespace WordleWPF.ViewModel
             _attempts = new List<AttemptViewModel>();
             for (int i = 0; i < attempts; i++)
             {
-                _attempts.Add(new AttemptViewModel(_winnerWord));
+                _attempts.Add(new AttemptViewModel(WordLen));
             }
         }
 
@@ -219,9 +219,6 @@ namespace WordleWPF.ViewModel
                     OnPropertyChanged(nameof(WrongPositionChar));
                     OnPropertyChanged(nameof(MissingPositionChar));
 
-                    //Aggiorno la View
-                    OnPropertyChanged(nameof(Attempts));
-
                     //Controllo la vittoria
                     if (gm.IsWinner(WordAttempt))
                     {
@@ -230,14 +227,14 @@ namespace WordleWPF.ViewModel
                         switch (result)
                         {
                             case MessageBoxResult.Yes:
-                                RestarGame(null);
+                                RestartGame(null);
                                 break;
                             case MessageBoxResult.No:
                                 App.Current.Shutdown();
                                 break;
                         }
                     }
-                    else if (_currentAttempt >= (MaxAttempt - 1))
+                    else if (_currentAttempt >= (_maxAttempt - 1))
                     {
                         MessageBoxResult result = MessageBox.Show($"The correct word was '{WinnerWord.ToUpper()}'", "You Lose", MessageBoxButton.OK, MessageBoxImage.Error);
                         switch (result)
@@ -264,10 +261,10 @@ namespace WordleWPF.ViewModel
             }
         }
 
-        private void RestarGame(object? o)
+        private void RestartGame(object? o)
         {
             Init();
-            CreateList(MaxAttempt);
+            CreateList(_maxAttempt);
             WordAttempt = null;
             _currentAttempt = 0;
             _wrongPositionChar.Clear();

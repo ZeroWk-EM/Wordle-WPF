@@ -29,7 +29,7 @@ namespace WordleWPF.ViewModel
             set
             {
                 _value = value;
-                OnPropertyChanged(nameof(Value));
+                OnPropertyChanged();
             }
         }
 
@@ -41,7 +41,7 @@ namespace WordleWPF.ViewModel
                 if (value != _position)
                 {
                     _position = value;
-                    OnPropertyChanged(nameof(CellPosition));
+                    OnPropertyChanged();
                 }
             }
         }

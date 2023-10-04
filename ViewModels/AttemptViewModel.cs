@@ -16,12 +16,12 @@ namespace WordleWPF.ViewModel
         #endregion
 
         #region Costruttore
-        public AttemptViewModel(string word)
+        public AttemptViewModel(int wordLength)
         {
             _characters = new ObservableCollection<CharacterViewModel>();
             _wrongPositionChar = new();
             _missingPositionChar = new();
-            CreateList(word);
+            CreateList(wordLength);
         }
         #endregion
 
@@ -49,9 +49,9 @@ namespace WordleWPF.ViewModel
         #endregion
 
         #region Metodi
-        private void CreateList(string word)
+        private void CreateList(int wordLength)
         {
-            for (int i = 0; i < word.Length; i++)
+            for (int i = 0; i < wordLength; i++)
             {
                 _characters.Add(new CharacterViewModel());
             }

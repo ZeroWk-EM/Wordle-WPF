@@ -23,7 +23,7 @@ namespace WordleWPF
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Cristo");
+                MessageBox.Show("An internal error occured, please contact the technical support");
                 _logger.Error($"{ex}");
                 App.Current.Shutdown();
             }
