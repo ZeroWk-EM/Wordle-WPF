@@ -26,8 +26,8 @@ namespace WordleWPF.ViewModel
         private string? _path;
         private string? _winnerWord;
         private List<AttemptViewModel>? _attempts;
-        private List<char> _wrongPositionChar;
-        private List<char> _missingPositionChar;
+        private HashSet<char> _wrongPositionChar;
+        private HashSet<char> _missingPositionChar;
         private string? _wordAttempt;
         private readonly Stopwatch _stopwatch;
         private readonly Timer _interval;
@@ -116,11 +116,11 @@ namespace WordleWPF.ViewModel
             }
         }
 
-        public List<char> WrongPositionChar
+        public HashSet<char> WrongPositionChar
         {
             get
             {
-                return new List<char>(_wrongPositionChar);
+                return new HashSet<char>(_wrongPositionChar);
             }
             set
             {
@@ -130,11 +130,11 @@ namespace WordleWPF.ViewModel
                 }
             }
         }
-        public List<char> MissingPositionChar
+        public HashSet<char> MissingPositionChar
         {
             get
             {
-                return new List<char>(_missingPositionChar);
+                return new HashSet<char>(_missingPositionChar);
             }
             set
             {
@@ -213,8 +213,8 @@ namespace WordleWPF.ViewModel
                     attempt.SetViewCharacter(WordAttempt, currentPositionAttempt);
 
                     // Caricare la lista dei caratteri
-                    _wrongPositionChar.AddRange(attempt.WrongPositionChar);
-                    _missingPositionChar.AddRange(attempt.MissingPositionChar);
+                    _wrongPositionChar.UnionWith(attempt.WrongPositionChar);
+                    _missingPositionChar.UnionWith(attempt.MissingPositionChar);
 
                     OnPropertyChanged(nameof(WrongPositionChar));
                     OnPropertyChanged(nameof(MissingPositionChar));

@@ -11,8 +11,8 @@ namespace WordleWPF.ViewModel
         #region Variabili
         public event PropertyChangedEventHandler? PropertyChanged;
         private ObservableCollection<CharacterViewModel> _characters;
-        private List<char> _wrongPositionChar;
-        private List<char> _missingPositionChar;
+         private HashSet<char> _wrongPositionChar;
+        private HashSet<char> _missingPositionChar;
         #endregion
 
         #region Costruttore
@@ -31,19 +31,19 @@ namespace WordleWPF.ViewModel
             get { return _characters; }
         }
 
-        public List<char> WrongPositionChar
+        public HashSet<char> WrongPositionChar
         {
             get
             {
-                return new List<char>(_wrongPositionChar);
+                return new HashSet<char>(_wrongPositionChar);
             }
         }
 
-        public List<char> MissingPositionChar
+        public HashSet<char> MissingPositionChar
         {
             get
             {
-                return new List<char>(_missingPositionChar);
+                return new HashSet<char>(_missingPositionChar);
             }
         }
         #endregion
@@ -67,7 +67,7 @@ namespace WordleWPF.ViewModel
                 if (attempt.CellPosition == Position.Wrong)
                 {
                     _wrongPositionChar.Add(attempt.Value);
-                    OnPropertyChanged(nameof(WrongPositionChar));
+                     OnPropertyChanged(nameof(WrongPositionChar));
                 }
                 else if (attempt.CellPosition == Position.Missing)
                 {
