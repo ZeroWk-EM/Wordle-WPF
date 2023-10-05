@@ -3,9 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewmodel="clr-namespace:WordleWPF.ViewModel" 
-     xmlns:resx="clr-namespace:WordleWPF.Resources"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:WordleWPF.Resources"
+    xmlns:viewmodel="clr-namespace:WordleWPF.ViewModel"
     Title="Wordle WPF"
     Width="1000"
     Height="500"
@@ -16,8 +16,8 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Style.xaml"/>
-                <ResourceDictionary Source="Resources/Theme.xaml"/>
+                <ResourceDictionary Source="Resources/Style.xaml" />
+                <ResourceDictionary Source="Resources/Theme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -35,28 +35,30 @@
                     Grid.Column="0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
                         <Border
-                         Width="250"
-                         Height="30"
-                         Margin="5"
-                         Background="{StaticResource InputLabel}"
-                         CornerRadius="5">
+                            Width="250"
+                            Height="30"
+                            Margin="5"
+                            Background="{StaticResource InputLabel}"
+                            CornerRadius="5">
                             <TextBox
-                             Width="250"
-                             Height="30"
-                             HorizontalContentAlignment="Center"
-                             VerticalContentAlignment="Center"
-                             Background="{StaticResource RemoveBackground}"
-                             BorderThickness="0"
-                             Text="{Binding WordAttempt}"
-                            />
+                                Width="250"
+                                Height="30"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Background="{StaticResource RemoveBackground}"
+                                BorderThickness="0"
+                                Text="{Binding WordAttempt}" />
                         </Border>
                         <Button
-                            BorderBrush="{StaticResource RemoveBackground}"
-                            Command="{Binding VerifyWordCommand}"
                             Width="50"
                             Height="30"
+                            BorderBrush="{StaticResource RemoveBackground}"
+                            Command="{Binding VerifyWordCommand}"
                             Content="»"
                             Foreground="{StaticResource MainText}"
                             Style="{DynamicResource RoundedButton}" />
@@ -76,7 +78,7 @@
                                                 Width="40"
                                                 Height="40"
                                                 Margin="5"
-                                                Background="{Binding CellPosition,Converter={StaticResource PositionToColorConverter}}"
+                                                Background="{Binding CellPosition, Converter={StaticResource PositionToColorConverter}}"
                                                 CornerRadius="5">
                                                 <TextBox
                                                     Width="40"
@@ -85,8 +87,8 @@
                                                     VerticalContentAlignment="Center"
                                                     Background="{StaticResource RemoveBackground}"
                                                     BorderThickness="0"
-                                                    MaxLength="1"
                                                     IsReadOnly="True"
+                                                    MaxLength="1"
                                                     Text="{Binding Value}" />
                                             </Border>
                                         </DataTemplate>
@@ -113,29 +115,32 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" Margin="10,5,10,5">
                                 <Label
-                                   Style="{StaticResource ResourceKey=UpperCaseText}"
                                     Content="{x:Static resx:Italian.InfoLabel}"
-                                    Foreground="{StaticResource MainText }"/>
+                                    Foreground="{StaticResource MainText}"
+                                    Style="{StaticResource ResourceKey=UpperCaseText}" />
                                 <StackPanel Orientation="Horizontal">
                                     <Label
                                         VerticalAlignment="Center"
                                         Content="{x:Static resx:Italian.WordLengthLabel}"
-                                        Foreground="{StaticResource MainText }" />
+                                        Foreground="{StaticResource MainText}" />
                                     <Label
                                         VerticalAlignment="Center"
                                         Content="{Binding WordLen}"
-                                        Foreground="{StaticResource MainText }" />
+                                        Foreground="{StaticResource MainText}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Label
                                         VerticalAlignment="Center"
                                         Content="{x:Static resx:Italian.PointLabel}"
-                                        Foreground="{StaticResource MainText }" />
-                                    <Label VerticalAlignment="Center" Foreground="{StaticResource MainText }" Content="{Binding Point}" />
+                                        Foreground="{StaticResource MainText}" />
+                                    <Label
+                                        VerticalAlignment="Center"
+                                        Content="{Binding Point}"
+                                        Foreground="{StaticResource MainText}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Label Content="{x:Static resx:Italian.StopwatchLabel}" Foreground="{StaticResource MainText }" />
-                                    <Label Content="{Binding TimeElapsed}" Foreground="{StaticResource MainText }" />
+                                    <Label Content="{x:Static resx:Italian.StopwatchLabel}" Foreground="{StaticResource MainText}" />
+                                    <Label Content="{Binding TimeElapsed}" Foreground="{StaticResource MainText}" />
                                 </StackPanel>
                             </StackPanel>
                             <Button
@@ -153,56 +158,62 @@
                         Background="{StaticResource SummaryWindow}"
                         BorderThickness="10"
                         CornerRadius="20">
-                        <StackPanel Margin="10,5,10,5">
-                            <Label
-                                Style="{StaticResource UpperCaseText}"
-                                Foreground="{StaticResource MainText}"
-                                Content="{x:Static resx:Italian.WrongPosChar}"/>
-                            <ItemsControl ItemsSource="{Binding WrongPositionChar}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border
-                                        Margin="0,0,10,0"
-                                        Background="{StaticResource WrongPosition}"
-                                        BorderThickness="5"
-                                        CornerRadius="4">
-                                            <Label
-                                            Style="{StaticResource PositionBoldChar}"   
-                                            Content="{Binding}"/>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <Label
-                                Style="{StaticResource UpperCaseText}"
-                                Foreground="{StaticResource MainText}"
-                                Content="{x:Static resx:Italian.MissingPosChar}"/>
-                            <ItemsControl ItemsSource="{Binding MissingPositionChar}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal" />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border
-                                         Margin="0,0,10,0"
-                                         Background="{StaticResource MissingPosition}"
-                                         BorderThickness="5"
-                                         CornerRadius="4">
-                                            <Label
-                                            Style="{StaticResource PositionBoldChar}"
-                                            Content="{Binding}"/>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <!--  WRONG  -->
+                            <StackPanel Margin="10,5,10,5">
+                                <Label
+                                    Content="{x:Static resx:Italian.WrongPosChar}"
+                                    Foreground="{StaticResource MainText}"
+                                    Style="{StaticResource UpperCaseText}" />
+                                <ItemsControl ItemsSource="{Binding WrongPositionChar}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border
+                                                Margin="0,0,10,0"
+                                                Background="{StaticResource WrongPosition}"
+                                                BorderThickness="5"
+                                                CornerRadius="4">
+                                                <Label Content="{Binding}" Style="{StaticResource PositionBoldChar}" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                             <!--  MISSING  -->
+                            <StackPanel Grid.Row="1" Margin="10,5,10,5">
+                                <Label
+                                    Content="{x:Static resx:Italian.MissingPosChar}"
+                                    Foreground="{StaticResource MainText}"
+                                    Style="{StaticResource UpperCaseText}" />
+                                <ItemsControl ItemsSource="{Binding MissingPositionChar}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border
+                                                Margin="0,0,10,0"
+                                                Background="{StaticResource MissingPosition}"
+                                                BorderThickness="5"
+                                                CornerRadius="4">
+                                                <Label Content="{Binding}" Style="{StaticResource PositionBoldChar}" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Grid>
                     </Border>
                 </Grid>
                 <GridSplitter
