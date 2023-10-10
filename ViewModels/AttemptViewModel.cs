@@ -35,7 +35,7 @@ namespace WordleWPF.ViewModel
         {
             get
             {
-                return new HashSet<char>(_wrongPositionChar);
+                return _wrongPositionChar;
             }
         }
 
@@ -43,7 +43,7 @@ namespace WordleWPF.ViewModel
         {
             get
             {
-                return new HashSet<char>(_missingPositionChar);
+                return _missingPositionChar;
             }
         }
         #endregion

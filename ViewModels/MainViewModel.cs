@@ -28,7 +28,7 @@ namespace WordleWPF.ViewModel
         private List<AttemptViewModel>? _attempts;
         private HashSet<char> _wrongPositionChar;
         private HashSet<char> _missingPositionChar;
-        private string? _wordAttempt;
+        private string _wordAttempt = "";
         private readonly Stopwatch _stopwatch;
         private readonly Timer _interval;
         private string _time = "00:00:00";
@@ -41,7 +41,7 @@ namespace WordleWPF.ViewModel
         public MainViewModel()
         {
             RestartGameCommand = new DelegateCommand(RestartGame);
-            VerifyWordCommand = new DelegateCommand(VerifyWord);
+            VerifyWordCommand = new DelegateCommand(VerifyWord, CanPressed);
             _wrongPositionChar = new();
             _missingPositionChar = new();
             _stopwatch = new Stopwatch();
@@ -49,6 +49,11 @@ namespace WordleWPF.ViewModel
             _interval.Elapsed += TimerElapsed;
             _stopwatch.Start();
             _interval.Start();
+        }
+
+        private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
         #endregion
 
@@ -73,7 +78,7 @@ namespace WordleWPF.ViewModel
 
         }
 
-        public string? WordAttempt
+        public string WordAttempt
         {
             get
             {
@@ -81,12 +86,12 @@ namespace WordleWPF.ViewModel
             }
             set
             {
-
                 if (_wordAttempt != value)
                 {
                     _wordAttempt = value;
+                    OnPropertyChanged();
+                    VerifyWordCommand.RaiseCanExecuteChanged();
                 }
-
             }
         }
 
@@ -144,6 +149,7 @@ namespace WordleWPF.ViewModel
                 }
             }
         }
+
         #endregion
 
         #region Metodi
@@ -197,7 +203,7 @@ namespace WordleWPF.ViewModel
         {
             if (WordAttempt != null && WinnerWord != null)
             {
-                WordAttempt = WordAttempt.ToLower().Replace(" ", ""); ;
+                WordAttempt = WordAttempt.ToLower().Replace(" ", "");
                 if (WordAttempt.Length == WinnerWord.Length)
                 {
                     // Carico il turno corrente
@@ -249,10 +255,6 @@ namespace WordleWPF.ViewModel
                         _currentAttempt++;
                     }
                 }
-                else
-                {
-                    MessageBox.Show($"The word entered is too {(WordAttempt.Length > WinnerWord.Length ? "Long" : "Short")}", "Length Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
             }
             else
             {
@@ -261,11 +263,19 @@ namespace WordleWPF.ViewModel
             }
         }
 
+        private bool CanPressed(object? o)
+        {
+            if (WordAttempt.Length > 0)
+            {
+                return WordAttempt.Length == WinnerWord.Length;
+            }
+            return false;
+        }
         private void RestartGame(object? o)
         {
             Init();
             CreateList(_maxAttempt);
-            WordAttempt = null;
+            WordAttempt = "";
             _currentAttempt = 0;
             _wrongPositionChar.Clear();
             _missingPositionChar.Clear();

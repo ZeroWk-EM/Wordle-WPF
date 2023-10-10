@@ -1,8 +1,7 @@
-﻿using System.Windows;
-using WordleWPF.ViewModel;
-using System.Windows.Threading;
+﻿using NLog;
 using System;
-using NLog;
+using System.Windows;
+using WordleWPF.ViewModel;
 
 namespace WordleWPF
 {

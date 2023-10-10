@@ -17,6 +17,10 @@ namespace WordleWPF.Utils
             {
                 return Application.Current.MainWindow.Resources["RightPosition"] as SolidColorBrush;
             }
+            set
+            {
+                Application.Current.MainWindow.Resources["RightPosition"] = value;
+            }
         }
 
         public static Brush? WrongColorBrush
@@ -24,6 +28,10 @@ namespace WordleWPF.Utils
             get
             {
                 return Application.Current.MainWindow.Resources["WrongPosition"] as SolidColorBrush;
+            }
+            set
+            {
+                Application.Current.MainWindow.Resources["WrongPosition"] = value;
             }
         }
 
@@ -33,12 +41,20 @@ namespace WordleWPF.Utils
             {
                 return Application.Current.MainWindow.Resources["MissingPosition"] as SolidColorBrush;
             }
+            set
+            {
+                Application.Current.MainWindow.Resources["MissingPosition"] = value;
+            }
         }
         public static Brush? DefaultColorBrush
         {
             get
             {
                 return Application.Current.MainWindow.Resources["DefaultCellColor"] as SolidColorBrush;
+            }
+            set
+            {
+                Application.Current.MainWindow.Resources["DefaultCellColor"] = value;
             }
         }
         #endregion

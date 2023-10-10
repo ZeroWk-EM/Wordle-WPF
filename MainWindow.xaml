@@ -52,7 +52,8 @@
                                 VerticalContentAlignment="Center"
                                 Background="{StaticResource RemoveBackground}"
                                 BorderThickness="0"
-                                Text="{Binding WordAttempt}" />
+                                MaxLength="{Binding WordLen}"
+                                Text="{Binding WordAttempt, UpdateSourceTrigger=PropertyChanged}" />
                         </Border>
                         <Button
                             Width="50"
@@ -115,13 +116,13 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" Margin="10,5,10,5">
                                 <Label
-                                    Content="{x:Static resx:Italian.InfoLabel}"
+                                    Content="{x:Static resx:Resources.InfoLabel}"
                                     Foreground="{StaticResource MainText}"
                                     Style="{StaticResource ResourceKey=UpperCaseText}" />
                                 <StackPanel Orientation="Horizontal">
                                     <Label
                                         VerticalAlignment="Center"
-                                        Content="{x:Static resx:Italian.WordLengthLabel}"
+                                        Content="{x:Static resx:Resources.WordLengthLabel}"
                                         Foreground="{StaticResource MainText}" />
                                     <Label
                                         VerticalAlignment="Center"
@@ -131,7 +132,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Label
                                         VerticalAlignment="Center"
-                                        Content="{x:Static resx:Italian.PointLabel}"
+                                        Content="{x:Static resx:Resources.PointLabel}"
                                         Foreground="{StaticResource MainText}" />
                                     <Label
                                         VerticalAlignment="Center"
@@ -139,7 +140,7 @@
                                         Foreground="{StaticResource MainText}" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Label Content="{x:Static resx:Italian.StopwatchLabel}" Foreground="{StaticResource MainText}" />
+                                    <Label Content="{x:Static resx:Resources.StopwatchLabel}" Foreground="{StaticResource MainText}" />
                                     <Label Content="{Binding TimeElapsed}" Foreground="{StaticResource MainText}" />
                                 </StackPanel>
                             </StackPanel>
@@ -148,7 +149,7 @@
                                 Margin="40"
                                 BorderBrush="{StaticResource RemoveBackground}"
                                 Command="{Binding RestartGameCommand}"
-                                Content="{x:Static resx:Italian.RestartLabel}"
+                                Content="{x:Static resx:Resources.RestartLabel}"
                                 Foreground="{StaticResource MainText}"
                                 Style="{DynamicResource RoundedButton}" />
                         </Grid>
@@ -166,7 +167,7 @@
                             <!--  WRONG  -->
                             <StackPanel Margin="10,5,10,5">
                                 <Label
-                                    Content="{x:Static resx:Italian.WrongPosChar}"
+                                    Content="{x:Static resx:Resources.WrongPosChar}"
                                     Foreground="{StaticResource MainText}"
                                     Style="{StaticResource UpperCaseText}" />
                                 <ItemsControl ItemsSource="{Binding WrongPositionChar}">
@@ -188,10 +189,10 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                             </StackPanel>
-                             <!--  MISSING  -->
+                            <!--  MISSING  -->
                             <StackPanel Grid.Row="1" Margin="10,5,10,5">
                                 <Label
-                                    Content="{x:Static resx:Italian.MissingPosChar}"
+                                    Content="{x:Static resx:Resources.MissingPosChar}"
                                     Foreground="{StaticResource MainText}"
                                     Style="{StaticResource UpperCaseText}" />
                                 <ItemsControl ItemsSource="{Binding MissingPositionChar}">
