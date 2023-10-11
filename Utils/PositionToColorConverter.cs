@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using Wordle_Library.Enum;
@@ -11,52 +10,15 @@ namespace WordleWPF.Utils
     public class PositionToColorConverter : IValueConverter
     {
         #region Proprietà
-        public static Brush? OkColorBrush
-        {
-            get
-            {
-                return Application.Current.MainWindow.Resources["RightPosition"] as SolidColorBrush;
-            }
-            set
-            {
-                Application.Current.MainWindow.Resources["RightPosition"] = value;
-            }
-        }
+        public Brush? OkColorBrush { get; set; }
 
-        public static Brush? WrongColorBrush
-        {
-            get
-            {
-                return Application.Current.MainWindow.Resources["WrongPosition"] as SolidColorBrush;
-            }
-            set
-            {
-                Application.Current.MainWindow.Resources["WrongPosition"] = value;
-            }
-        }
+        public Brush? WrongColorBrush { get; set; }
 
-        public static Brush? MissingColorBrush
-        {
-            get
-            {
-                return Application.Current.MainWindow.Resources["MissingPosition"] as SolidColorBrush;
-            }
-            set
-            {
-                Application.Current.MainWindow.Resources["MissingPosition"] = value;
-            }
-        }
-        public static Brush? DefaultColorBrush
-        {
-            get
-            {
-                return Application.Current.MainWindow.Resources["DefaultCellColor"] as SolidColorBrush;
-            }
-            set
-            {
-                Application.Current.MainWindow.Resources["DefaultCellColor"] = value;
-            }
-        }
+
+        public Brush? MissingColorBrush { get; set; }
+
+        public Brush? DefaultColorBrush { get; set; }
+
         #endregion
 
         #region Metodi

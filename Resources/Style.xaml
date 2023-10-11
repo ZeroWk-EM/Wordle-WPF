@@ -13,7 +13,6 @@
     <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383" />
 
     <!-- CELL COLOR -->
-    <local1:PositionToColorConverter x:Key="PositionToColorConverter"/>
     <Style x:Key="FocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>
