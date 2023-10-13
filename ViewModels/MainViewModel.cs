@@ -9,8 +9,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Timers;
 using System.Windows;
+using System.Windows.Input;
 using Wordle_Library;
 using Wordle_Library.Enum;
+using WordleWPF.View;
 using WordleWPF.ViewModels;
 
 namespace WordleWPF.ViewModel
@@ -28,6 +30,7 @@ namespace WordleWPF.ViewModel
         private List<AttemptViewModel>? _attempts;
         private HashSet<char> _wrongPositionChar;
         private HashSet<char> _missingPositionChar;
+        private List<string> _attemptHistory;
         private string _wordAttempt = "";
         private readonly Stopwatch _stopwatch;
         private readonly Timer _interval;
@@ -44,6 +47,7 @@ namespace WordleWPF.ViewModel
             VerifyWordCommand = new DelegateCommand(VerifyWord, CanPressed);
             _wrongPositionChar = new();
             _missingPositionChar = new();
+            _attemptHistory = new();
             _stopwatch = new Stopwatch();
             _interval = new Timer(1000);
             _interval.Elapsed += TimerElapsed;
@@ -199,13 +203,28 @@ namespace WordleWPF.ViewModel
             }
         }
 
+        private bool IsIntoTheList()
+        {
+            foreach (string word in _attemptHistory)
+            {
+                if (word == WordAttempt)
+                {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+
         private void VerifyWord(object? o)
         {
+
             if (WordAttempt != null && WinnerWord != null)
             {
                 WordAttempt = WordAttempt.ToLower().Replace(" ", "");
                 if (WordAttempt.Length == WinnerWord.Length)
                 {
+
                     // Carico il turno corrente
                     AttemptViewModel attempt = Attempts.ElementAt(_currentAttempt);
 
@@ -229,31 +248,21 @@ namespace WordleWPF.ViewModel
                     if (gm.IsWinner(WordAttempt))
                     {
                         SetPoint();
-                        MessageBoxResult result = MessageBox.Show("Do you wanna play again", "You Win", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        switch (result)
-                        {
-                            case MessageBoxResult.Yes:
-                                RestartGame(null);
-                                break;
-                            case MessageBoxResult.No:
-                                App.Current.Shutdown();
-                                break;
-                        }
+                        WordleDialog childwin = new();
+                        childwin.Show();
                     }
                     else if (_currentAttempt >= (_maxAttempt - 1))
                     {
-                        MessageBoxResult result = MessageBox.Show($"The correct word was '{WinnerWord.ToUpper()}'", "You Lose", MessageBoxButton.OK, MessageBoxImage.Error);
-                        switch (result)
-                        {
-                            case MessageBoxResult.OK:
-                                App.Current.Shutdown();
-                                break;
-                        }
+                        WordleDialog childwin = new();
+                        childwin.Show();
                     }
                     else
                     {
                         _currentAttempt++;
+                        _attemptHistory.Add(WordAttempt);
+                        WordAttempt = "";
                     }
+
                 }
             }
             else
@@ -265,10 +274,16 @@ namespace WordleWPF.ViewModel
 
         private bool CanPressed(object? o)
         {
+            if (IsIntoTheList())
+            {
+                return false;
+            }
+
             if (WordAttempt.Length > 0)
             {
                 return WordAttempt.Length == WinnerWord.Length;
             }
+
             return false;
         }
         private void RestartGame(object? o)
@@ -312,6 +327,7 @@ namespace WordleWPF.ViewModel
                     break;
             }
         }
+
         #endregion
 
         #region Eventi
