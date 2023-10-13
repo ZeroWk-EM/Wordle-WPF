@@ -1,6 +1,7 @@
 ﻿using NLog;
 using System;
 using System.Windows;
+using System.Windows.Input;
 using WordleWPF.ViewModel;
 
 namespace WordleWPF
@@ -25,6 +26,18 @@ namespace WordleWPF
                 MessageBox.Show("An internal error occured, please contact the technical support");
                 _logger.Error($"{ex}");
                 App.Current.Shutdown();
+            }
+        }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                (DataContext as MainViewModel)?.VerifyWordCommand?.Execute(null);
+            }
+            if (e.Key == Key.Space)
+            {
+                e.Handled = true;
             }
         }
     }

@@ -53,6 +53,7 @@
                             Background="{StaticResource InputLabel}"
                             CornerRadius="5">
                             <TextBox
+                                x:Name="AttemptLabel"
                                 Width="250"
                                 Height="30"
                                 HorizontalContentAlignment="Center"
@@ -60,6 +61,7 @@
                                 Background="{StaticResource RemoveBackground}"
                                 BorderThickness="0"
                                 MaxLength="{Binding WordLen}"
+                                PreviewKeyDown="TextBox_KeyDown"
                                 Text="{Binding WordAttempt, UpdateSourceTrigger=PropertyChanged}" />
                         </Border>
                         <Button
