@@ -13,7 +13,6 @@
     ResizeMode="NoResize"
     Topmost="True"
     WindowStartupLocation="CenterScreen"
-    WindowStyle="None"
     mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
@@ -58,16 +57,16 @@
                             Grid.Column="0"
                             Height="40"
                             Margin="10"
-                            Content="{x:Static resx:Resources.YesButton}"
                             Command="{Binding YesButtonCommand}"
+                            Content="{x:Static resx:Resources.YesButton}"
                             Foreground="{StaticResource MainText}"
                             Style="{DynamicResource RoundedButton}" />
                         <Button
                             Grid.Column="1"
                             Height="40"
                             Margin="10"
-                            Content="{x:Static resx:Resources.NoButton}"
                             Command="{Binding NoButtonCommand}"
+                            Content="{x:Static resx:Resources.NoButton}"
                             Foreground="{StaticResource MainText}"
                             Style="{DynamicResource RoundedButton}" />
                     </Grid>

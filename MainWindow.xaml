@@ -48,7 +48,7 @@
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
                         <Border
-                            x:Name="MyLabel"
+                            x:Name="AttemptBox"
                             Width="{Binding ElementName=BoxGrid, Path=ActualWidth}"
                             Height="35"
                             Margin="0,0,0,10"
@@ -57,6 +57,7 @@
                             Background="{StaticResource InputLabel}"
                             CornerRadius="10">
                             <TextBox
+                                x:Name="AttemptInput"
                                 Width="{Binding ElementName=BoxGrid, Path=ActualWidth}"
                                 Height="35"
                                 HorizontalAlignment="Center"

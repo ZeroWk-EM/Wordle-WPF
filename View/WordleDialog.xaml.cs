@@ -15,8 +15,15 @@ namespace WordleWPF.View
             InitializeComponent();
             var vm = new DialogViewModel(IsWinner, WinnerWord!, check);
             DataContext = vm;
+            vm.ButtonClicked += HandleButtonClicker;
         }
 
-
+        private void HandleButtonClicker(bool isClicked)
+        {
+            if (isClicked)
+            {
+                this.Close();
+            }
+        }
     }
 }

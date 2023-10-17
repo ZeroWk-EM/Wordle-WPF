@@ -29,7 +29,6 @@ namespace WordleWPF.ViewModel
         private List<AttemptViewModel>? _attempts;
         private HashSet<char> _wrongPositionChar;
         private HashSet<char> _missingPositionChar;
-        private List<string> _attemptHistory;
         private string _wordAttempt = "";
         private readonly Stopwatch _stopwatch;
         private readonly Timer _interval;
@@ -37,6 +36,9 @@ namespace WordleWPF.ViewModel
         private int _point = 0;
         private string _title = "";
         private string _paragraph = "";
+        private HashSet<string> _usedWords;
+        public Action BlinkTextBox;
+
         public DelegateCommand RestartGameCommand { get; }
         public DelegateCommand VerifyWordCommand { get; }
         #endregion
@@ -48,7 +50,7 @@ namespace WordleWPF.ViewModel
             VerifyWordCommand = new DelegateCommand(VerifyWord, CanPressed);
             _wrongPositionChar = new();
             _missingPositionChar = new();
-            _attemptHistory = new();
+            _usedWords = new();
             _stopwatch = new Stopwatch();
             _interval = new Timer(1000);
             _interval.Elapsed += TimerElapsed;
@@ -170,7 +172,6 @@ namespace WordleWPF.ViewModel
             }
         }
 
-
         public string Paragraph
         {
             get
@@ -185,8 +186,6 @@ namespace WordleWPF.ViewModel
                 }
             }
         }
-
-
 
         #endregion
 
@@ -237,19 +236,11 @@ namespace WordleWPF.ViewModel
             }
         }
 
-        // TOFIX
-        private bool IsIntoTheList()
+        private bool IsWordAttemptDuplicate(string word)
         {
-            foreach (string word in _attemptHistory)
-            {
-                if (word == WordAttempt)
-                {
-                    return true;
-                }
-                return false;
-            }
-            return false;
+            return _usedWords.Contains(word);
         }
+
 
         private void VerifyWord(object? o)
         {
@@ -257,47 +248,55 @@ namespace WordleWPF.ViewModel
             if (WordAttempt != null && WinnerWord != null)
             {
                 WordAttempt = WordAttempt.ToLower().Replace(" ", "");
-                if (WordAttempt.Length == WinnerWord.Length)
+
+                if (!IsWordAttemptDuplicate(WordAttempt))
                 {
-
-                    // Carico il turno corrente
-                    AttemptViewModel attempt = Attempts.ElementAt(_currentAttempt);
-
-                    // Inserimento parola nella GM Logic
-                    gm.VerifyPosition(WordAttempt);
-
-                    // Prendo la lista di posizioni del turno corrente e li salvo in una lista
-                    List<Position> currentPositionAttempt = gm.GameBoard[_currentAttempt].Positions.ToList();
-
-                    // Mando la parola e la lista al ViewModel dell' attempt
-                    attempt.SetViewCharacter(WordAttempt, currentPositionAttempt);
-
-                    // Caricare la lista dei caratteri
-                    _wrongPositionChar.UnionWith(attempt.WrongPositionChar);
-                    _missingPositionChar.UnionWith(attempt.MissingPositionChar);
-
-                    OnPropertyChanged(nameof(WrongPositionChar));
-                    OnPropertyChanged(nameof(MissingPositionChar));
-
-                    //Controllo la vittoria
-                    if (gm.IsWinner(WordAttempt))
+                    if (WordAttempt.Length == WinnerWord.Length)
                     {
-                        SetPoint();
-                        ShowWordleDialog(true);
+
+                        // Carico il turno corrente
+                        AttemptViewModel attempt = Attempts.ElementAt(_currentAttempt);
+
+                        // Inserimento parola nella GM Logic
+                        gm.VerifyPosition(WordAttempt);
+
+                        // Prendo la lista di posizioni del turno corrente e li salvo in una lista
+                        List<Position> currentPositionAttempt = gm.GameBoard[_currentAttempt].Positions.ToList();
+
+                        // Mando la parola e la lista al ViewModel dell' attempt
+                        attempt.SetViewCharacter(WordAttempt, currentPositionAttempt);
+
+                        // Caricare la lista dei caratteri
+                        _wrongPositionChar.UnionWith(attempt.WrongPositionChar);
+                        _missingPositionChar.UnionWith(attempt.MissingPositionChar);
+
+                        OnPropertyChanged(nameof(WrongPositionChar));
+                        OnPropertyChanged(nameof(MissingPositionChar));
+
+                        _usedWords.Add(WordAttempt);
+
+                        //Controllo la vittoria
+                        if (gm.IsWinner(WordAttempt))
+                        {
+                            SetPoint();
+                            ShowWordleDialog(true);
 
 
+                        }
+                        else if (_currentAttempt >= (_maxAttempt - 1))
+                        {
+                            ShowWordleDialog(false);
+                        }
+                        else
+                        {
+                            _currentAttempt++;
+                            WordAttempt = "";
+                        }
                     }
-                    else if (_currentAttempt >= (_maxAttempt - 1))
-                    {
-                        ShowWordleDialog(false);
-                    }
-                    else
-                    {
-                        _currentAttempt++;
-                        _attemptHistory.Add(WordAttempt);
-                        WordAttempt = "";
-                    }
-
+                }
+                else
+                {
+                    BlinkTextBox.Invoke();
                 }
             }
             else
@@ -315,28 +314,18 @@ namespace WordleWPF.ViewModel
 
         private bool CanPressed(object? o)
         {
-            //TOFIX
-            if (IsIntoTheList())
-            {
-                return false;
-            }
-
-            if (WordAttempt.Length > 0)
-            {
-                return WordAttempt.Length == WinnerWord.Length;
-            }
-
-            return false;
+            return WordAttempt.Length == WinnerWord.Length;
         }
+
         private void RestartGame(object? o)
         {
-            Application.Current.MainWindow.IsEnabled = true;
             Init();
             CreateList(_maxAttempt);
             WordAttempt = "";
             _currentAttempt = 0;
             _wrongPositionChar.Clear();
             _missingPositionChar.Clear();
+            _usedWords.Clear();
             OnPropertyChanged(nameof(WinnerWord));
             OnPropertyChanged(nameof(WordLen));
             OnPropertyChanged(nameof(Attempts));

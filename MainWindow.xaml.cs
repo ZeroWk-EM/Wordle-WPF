@@ -1,7 +1,9 @@
 ﻿using NLog;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using WordleWPF.ViewModel;
 
 namespace WordleWPF
@@ -12,14 +14,16 @@ namespace WordleWPF
     public partial class MainWindow : Window
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
+        MainViewModel vm;
         public MainWindow()
         {
             InitializeComponent();
-            var vm = new MainViewModel();
+            vm = new MainViewModel();
             DataContext = vm;
             try
             {
                 vm.Init();
+                vm.BlinkTextBox += BlinkEvent;
             }
             catch (Exception ex)
             {
@@ -27,6 +31,22 @@ namespace WordleWPF
                 _logger.Error($"{ex}");
                 App.Current.Shutdown();
             }
+        }
+
+        private async void BlinkEvent()
+        {
+            SolidColorBrush? originalColorBrush = AttemptBox.Background as SolidColorBrush;
+            SolidColorBrush? errorColorBrush = Application.Current.MainWindow.Resources["MissingPosition"] as SolidColorBrush;
+
+            for (int i = 0; i < 2; i++)
+            {
+                AttemptBox.Background = errorColorBrush;
+                await Task.Delay(100);
+                AttemptBox.Background = originalColorBrush;
+                await Task.Delay(100);
+            }
+            AttemptBox.Background = originalColorBrush;
+            AttemptInput.Text = "";
         }
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)

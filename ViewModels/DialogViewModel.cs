@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 
 namespace WordleWPF.ViewModels
 {
     public class DialogViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event Action<bool> ButtonClicked;
+
         private string _paragraph = "";
         private readonly Action<bool> _actBool;
 
@@ -41,12 +42,18 @@ namespace WordleWPF.ViewModels
         private void YesFunction(object? o)
         {
             _actBool(true);
+            ButtonClicked.Invoke(true);
         }
 
         private void NoFunction(object? o)
         {
             _actBool(false);
+            ButtonClicked.Invoke(true);
+
         }
+
+
+
 
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
