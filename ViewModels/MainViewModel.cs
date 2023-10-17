@@ -9,7 +9,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Timers;
 using System.Windows;
-using System.Windows.Input;
 using Wordle_Library;
 using Wordle_Library.Enum;
 using WordleWPF.View;
@@ -36,6 +35,8 @@ namespace WordleWPF.ViewModel
         private readonly Timer _interval;
         private string _time = "00:00:00";
         private int _point = 0;
+        private string _title = "";
+        private string _paragraph = "";
         public DelegateCommand RestartGameCommand { get; }
         public DelegateCommand VerifyWordCommand { get; }
         #endregion
@@ -154,6 +155,39 @@ namespace WordleWPF.ViewModel
             }
         }
 
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
+            set
+            {
+                if (_title != value)
+                {
+                    _title = value;
+                }
+            }
+        }
+
+
+        public string Paragraph
+        {
+            get
+            {
+                return _paragraph;
+            }
+            set
+            {
+                if (_paragraph != value)
+                {
+                    _paragraph = value;
+                }
+            }
+        }
+
+
+
         #endregion
 
         #region Metodi
@@ -179,7 +213,7 @@ namespace WordleWPF.ViewModel
 
                     else
                     {
-                        gm = new Logic(wordlist);
+                        gm = new Logic(wordlist.Where(word => word.Length <= 6).ToList());
                         WinnerWord = gm.ChooseRandomWord();
                         _logger.Info("Info - game successfully initialized");
                         CreateList(_maxAttempt);
@@ -203,6 +237,7 @@ namespace WordleWPF.ViewModel
             }
         }
 
+        // TOFIX
         private bool IsIntoTheList()
         {
             foreach (string word in _attemptHistory)
@@ -248,13 +283,13 @@ namespace WordleWPF.ViewModel
                     if (gm.IsWinner(WordAttempt))
                     {
                         SetPoint();
-                        WordleDialog childwin = new();
-                        childwin.Show();
+                        ShowWordleDialog(true);
+
+
                     }
                     else if (_currentAttempt >= (_maxAttempt - 1))
                     {
-                        WordleDialog childwin = new();
-                        childwin.Show();
+                        ShowWordleDialog(false);
                     }
                     else
                     {
@@ -272,8 +307,15 @@ namespace WordleWPF.ViewModel
             }
         }
 
+        private void ShowWordleDialog(bool isWinner)
+        {
+            WordleDialog childwin = new((item) => { if (item) { RestartGameCommand.Execute(null); } else { Application.Current.Shutdown(); } }, WinnerWord, isWinner);
+            childwin.Show();
+        }
+
         private bool CanPressed(object? o)
         {
+            //TOFIX
             if (IsIntoTheList())
             {
                 return false;
@@ -288,6 +330,7 @@ namespace WordleWPF.ViewModel
         }
         private void RestartGame(object? o)
         {
+            Application.Current.MainWindow.IsEnabled = true;
             Init();
             CreateList(_maxAttempt);
             WordAttempt = "";

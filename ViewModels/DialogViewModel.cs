@@ -1,44 +1,51 @@
-﻿using System.ComponentModel;
-using System.Linq;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using WordleWPF.View;
-using WordleWPF.ViewModel;
 
 namespace WordleWPF.ViewModels
 {
     public class DialogViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
-        private string _title = "DialogBox";
+        private string _paragraph = "";
+        private readonly Action<bool> _actBool;
 
-        public DelegateCommand RestartGameCommand { get; }
-        public DialogViewModel()
+
+        public DelegateCommand YesButtonCommand { get; }
+        public DelegateCommand NoButtonCommand { get; }
+
+        public DialogViewModel(Action<bool> actBool, string WinnerWord, bool winner)
         {
-            RestartGameCommand = new DelegateCommand(RestartGame);
+            _actBool = actBool;
+            Paragraph = $"{"Hai " + (winner ? "vinto" : "perso")}" + $"{(winner ? "" : (" la parola corretta è " + $"{WinnerWord.ToUpper()}"))}" + $"{", vuoi giorcare ancora?"}";
+            YesButtonCommand = new(YesFunction);
+            NoButtonCommand = new(NoFunction);
         }
 
-        public string Title
+        public string Paragraph
         {
             get
             {
-                return _title;
+                return _paragraph;
             }
             set
             {
-                if (_title != value)
+                if (_paragraph != value)
                 {
-                    _title = value;
+                    _paragraph = value;
                 }
             }
         }
 
-        private void RestartGame(object? o)
+        private void YesFunction(object? o)
         {
-            //Application.Current.MainWindow.IsEnabled = true;
-            MainViewModel vm = new();
-            vm.RestartGameCommand.Execute(null);
-            //Application.Current.Windows.OfType<WordleDialog>().SingleOrDefault()?.Close();
+            _actBool(true);
+        }
+
+        private void NoFunction(object? o)
+        {
+            _actBool(false);
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)

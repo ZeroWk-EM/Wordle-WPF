@@ -4,15 +4,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:WordleWPF.Resources"
+    xmlns:viewmodel="clr-namespace:WordleWPF.ViewModel"
     xmlns:viewmodels="clr-namespace:WordleWPF.ViewModels"
-    Title="A"
     Width="350"
     Height="180"
     d:DataContext="{d:DesignInstance Type=viewmodels:DialogViewModel}"
-    Closed="ChildWindow_Closed"
     ResizeMode="NoResize"
     Topmost="True"
     WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
     mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
@@ -41,7 +42,7 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Foreground="{StaticResource MainText}"
-                        Text="Complimenti, hai vinto! Vuoi giocare ancora?">
+                        Text="{Binding Paragraph}">
                         <TextBlock.TextWrapping>
                             Wrap
                         </TextBlock.TextWrapping>
@@ -57,16 +58,16 @@
                             Grid.Column="0"
                             Height="40"
                             Margin="10"
-                            Command="{Binding RestartGameCommand}"
-                            Content="OK"
+                            Content="{x:Static resx:Resources.YesButton}"
+                            Command="{Binding YesButtonCommand}"
                             Foreground="{StaticResource MainText}"
                             Style="{DynamicResource RoundedButton}" />
-
                         <Button
                             Grid.Column="1"
                             Height="40"
                             Margin="10"
-                            Content="CHIUDI APP"
+                            Content="{x:Static resx:Resources.NoButton}"
+                            Command="{Binding NoButtonCommand}"
                             Foreground="{StaticResource MainText}"
                             Style="{DynamicResource RoundedButton}" />
                     </Grid>

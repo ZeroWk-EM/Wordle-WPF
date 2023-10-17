@@ -79,6 +79,15 @@ namespace WordleWPF.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a No.
+        /// </summary>
+        public static string NoButton {
+            get {
+                return ResourceManager.GetString("NoButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Punteggio.
         /// </summary>
         public static string PointLabel {
@@ -129,6 +138,15 @@ namespace WordleWPF.Resources {
         public static string WrongPosChar {
             get {
                 return ResourceManager.GetString("WrongPosChar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Si.
+        /// </summary>
+        public static string YesButton {
+            get {
+                return ResourceManager.GetString("YesButton", resourceCulture);
             }
         }
     }

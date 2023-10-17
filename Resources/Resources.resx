@@ -123,6 +123,9 @@
   <data name="MissingPosChar" xml:space="preserve">
     <value>Lettere non presenti</value>
   </data>
+  <data name="NoButton" xml:space="preserve">
+    <value>No</value>
+  </data>
   <data name="PointLabel" xml:space="preserve">
     <value>Punteggio</value>
   </data>
@@ -140,5 +143,8 @@
   </data>
   <data name="WrongPosChar" xml:space="preserve">
     <value>Lettere Presenti</value>
+  </data>
+  <data name="YesButton" xml:space="preserve">
+    <value>Si</value>
   </data>
 </root>

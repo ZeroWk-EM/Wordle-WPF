@@ -43,19 +43,24 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
                     <StackPanel
+                        Width="{Binding ElementName=BoxGrid, Path=ActualWidth}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
                         <Border
-                            Width="250"
-                            Height="30"
-                            Margin="5"
+                            x:Name="MyLabel"
+                            Width="{Binding ElementName=BoxGrid, Path=ActualWidth}"
+                            Height="35"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
                             Background="{StaticResource InputLabel}"
-                            CornerRadius="5">
+                            CornerRadius="10">
                             <TextBox
-                                x:Name="AttemptLabel"
-                                Width="250"
-                                Height="30"
+                                Width="{Binding ElementName=BoxGrid, Path=ActualWidth}"
+                                Height="35"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
                                 Background="{StaticResource RemoveBackground}"
@@ -64,16 +69,22 @@
                                 PreviewKeyDown="TextBox_KeyDown"
                                 Text="{Binding WordAttempt, UpdateSourceTrigger=PropertyChanged}" />
                         </Border>
-                        <Button
-                            Width="50"
-                            Height="30"
+                        <!--<Button
+                            x:Name="SendButton"
+                            Width="40"
+                            Height="40"
+                            Margin="10,0,0,0"
                             BorderBrush="{StaticResource RemoveBackground}"
                             Command="{Binding VerifyWordCommand}"
-                            Content="»"
+                            Content="{x:Static resx:Resources.SendArrowLabel}"
                             Foreground="{StaticResource MainText}"
-                            Style="{DynamicResource RoundedButton}" />
+                            Style="{DynamicResource RoundedButton}" />-->
                     </StackPanel>
-                    <ItemsControl ItemsSource="{Binding Attempts}">
+                    <ItemsControl
+                        x:Name="BoxGrid"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding Attempts}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <ItemsControl ItemsSource="{Binding Characters}">
@@ -148,6 +159,7 @@
                                         Content="{Binding Point}"
                                         Foreground="{StaticResource MainText}" />
                                 </StackPanel>
+
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="{x:Static resx:Resources.StopwatchLabel}" Foreground="{StaticResource MainText}" />
                                     <Label Content="{Binding TimeElapsed}" Foreground="{StaticResource MainText}" />
@@ -155,6 +167,7 @@
                             </StackPanel>
                             <Button
                                 Grid.Column="1"
+                                Height="35"
                                 Margin="40"
                                 BorderBrush="{StaticResource RemoveBackground}"
                                 Command="{Binding RestartGameCommand}"
@@ -188,11 +201,16 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Border
-                                                Margin="0,0,10,0"
+                                                Width="30"
+                                                Height="30"
+                                                Margin="5,0,5,0"
                                                 Background="{StaticResource WrongPosition}"
-                                                BorderThickness="5"
                                                 CornerRadius="4">
-                                                <Label Content="{Binding}" Style="{StaticResource PositionBoldChar}" />
+                                                <Label
+                                                    HorizontalContentAlignment="Center"
+                                                    VerticalContentAlignment="Center"
+                                                    Content="{Binding}"
+                                                    Style="{StaticResource PositionBoldChar}" />
                                             </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -213,11 +231,16 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Border
-                                                Margin="0,0,10,0"
+                                                Width="30"
+                                                Height="30"
+                                                Margin="5,0,5,0"
                                                 Background="{StaticResource MissingPosition}"
-                                                BorderThickness="5"
                                                 CornerRadius="4">
-                                                <Label Content="{Binding}" Style="{StaticResource PositionBoldChar}" />
+                                                <Label
+                                                    HorizontalContentAlignment="Center"
+                                                    VerticalContentAlignment="Center"
+                                                    Content="{Binding}"
+                                                    Style="{StaticResource PositionBoldChar}" />
                                             </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>

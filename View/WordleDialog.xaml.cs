@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using WordleWPF.ViewModel;
@@ -9,23 +10,13 @@ namespace WordleWPF.View
 
     public partial class WordleDialog : Window
     {
-        public WordleDialog()
+        public WordleDialog(Action<bool> IsWinner, string? WinnerWord, bool check)
         {
             InitializeComponent();
-            if (Application.Current.MainWindow != null)
-            {
-                Application.Current.MainWindow.IsEnabled = false;
-            }
-            var vm = new  DialogViewModel();
+            var vm = new DialogViewModel(IsWinner, WinnerWord!, check);
             DataContext = vm;
-         }
-
-        private void ChildWindow_Closed(object sender, EventArgs e)
-        {
-            if (Application.Current.MainWindow != null)
-            {
-                Application.Current.MainWindow.IsEnabled = true;
-            }
         }
+
+
     }
 }
