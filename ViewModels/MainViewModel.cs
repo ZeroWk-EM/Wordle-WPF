@@ -280,7 +280,7 @@ namespace WordleWPF.ViewModel
         private void ShowResultDialog(bool isWinner)
         {
             WordleDialog childwin = new((item) => { if (item) { RestartGameCommand.Execute(null); } else { Application.Current.Shutdown(); } }, WinnerWord, isWinner);
-            childwin.Show();
+            childwin.ShowDialog();
         }
 
         private void ShowErrorDialog(string? ovveraidMessage)
