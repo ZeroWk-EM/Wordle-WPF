@@ -70,6 +70,15 @@ namespace WordleWPF.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Inserisci una parola dentro la casella.
+        /// </summary>
+        public static string InsetWordLabel {
+            get {
+                return ResourceManager.GetString("InsetWordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Lettere non presenti.
         /// </summary>
         public static string MissingPosChar {

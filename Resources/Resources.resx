@@ -120,6 +120,9 @@
   <data name="InfoLabel" xml:space="preserve">
     <value>Informazioni</value>
   </data>
+  <data name="InsetWordLabel" xml:space="preserve">
+    <value>Inserisci una parola dentro la casella</value>
+  </data>
   <data name="MissingPosChar" xml:space="preserve">
     <value>Lettere non presenti</value>
   </data>

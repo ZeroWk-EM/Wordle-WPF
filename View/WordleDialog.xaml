@@ -5,8 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:WordleWPF.Resources"
-    xmlns:viewmodel="clr-namespace:WordleWPF.ViewModel"
     xmlns:viewmodels="clr-namespace:WordleWPF.ViewModels"
+    Title="{Binding Title}"
     Width="350"
     Height="180"
     d:DataContext="{d:DesignInstance Type=viewmodels:DialogViewModel}"
@@ -54,6 +54,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Button
+                            x:Name="AcceptButton"
                             Grid.Column="0"
                             Height="40"
                             Margin="10"
@@ -62,6 +63,7 @@
                             Foreground="{StaticResource MainText}"
                             Style="{DynamicResource RoundedButton}" />
                         <Button
+                            x:Name="DenialButton"
                             Grid.Column="1"
                             Height="40"
                             Margin="10"

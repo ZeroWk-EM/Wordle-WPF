@@ -4,17 +4,19 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using WordleWPF.View;
 using WordleWPF.ViewModel;
 
 namespace WordleWPF
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        #region Variabili
         private static Logger _logger = LogManager.GetCurrentClassLogger();
         MainViewModel vm;
+        #endregion
+
+        #region Costruttore
         public MainWindow()
         {
             InitializeComponent();
@@ -27,12 +29,14 @@ namespace WordleWPF
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An internal error occured, please contact the technical support");
+                WordleDialog errorDialog = new(() => { Application.Current.Shutdown(); }, null);
+                errorDialog.ShowDialog();
                 _logger.Error($"{ex}");
-                App.Current.Shutdown();
             }
         }
+        #endregion
 
+        #region Metodi
         private async void BlinkEvent()
         {
             SolidColorBrush? originalColorBrush = AttemptBox.Background as SolidColorBrush;
@@ -46,9 +50,10 @@ namespace WordleWPF
                 await Task.Delay(100);
             }
             AttemptBox.Background = originalColorBrush;
-            AttemptInput.Text = "";
         }
+        #endregion
 
+        #region Eventi
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -60,5 +65,6 @@ namespace WordleWPF
                 e.Handled = true;
             }
         }
+        #endregion
     }
 }

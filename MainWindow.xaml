@@ -46,7 +46,12 @@
                         Width="{Binding ElementName=BoxGrid, Path=ActualWidth}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Orientation="Horizontal">
+                        Orientation="Vertical">
+                        <Label
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{x:Static resx:Resources.InsetWordLabel}"
+                            Foreground="{StaticResource MainText}" />
                         <Border
                             x:Name="AttemptBox"
                             Width="{Binding ElementName=BoxGrid, Path=ActualWidth}"

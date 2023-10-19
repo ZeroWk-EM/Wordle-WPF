@@ -34,8 +34,7 @@ namespace WordleWPF.ViewModel
         private readonly Timer _interval;
         private string _time = "00:00:00";
         private int _point = 0;
-        private string _title = "";
-        private string _paragraph = "";
+        private int _wordLen;
         private HashSet<string> _usedWords;
         public Action BlinkTextBox;
 
@@ -48,6 +47,7 @@ namespace WordleWPF.ViewModel
         {
             RestartGameCommand = new DelegateCommand(RestartGame);
             VerifyWordCommand = new DelegateCommand(VerifyWord, CanPressed);
+            _wordLen = 0;
             _wrongPositionChar = new();
             _missingPositionChar = new();
             _usedWords = new();
@@ -56,11 +56,6 @@ namespace WordleWPF.ViewModel
             _interval.Elapsed += TimerElapsed;
             _stopwatch.Start();
             _interval.Start();
-        }
-
-        private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            throw new NotImplementedException();
         }
         #endregion
 
@@ -80,7 +75,12 @@ namespace WordleWPF.ViewModel
         {
             get
             {
-                return _winnerWord.Length;
+                return _wordLen;
+            }
+            private set
+            {
+                _wordLen = _winnerWord.Length;
+                OnPropertyChanged();
             }
 
         }
@@ -156,37 +156,6 @@ namespace WordleWPF.ViewModel
                 }
             }
         }
-
-        public string Title
-        {
-            get
-            {
-                return _title;
-            }
-            set
-            {
-                if (_title != value)
-                {
-                    _title = value;
-                }
-            }
-        }
-
-        public string Paragraph
-        {
-            get
-            {
-                return _paragraph;
-            }
-            set
-            {
-                if (_paragraph != value)
-                {
-                    _paragraph = value;
-                }
-            }
-        }
-
         #endregion
 
         #region Metodi
@@ -202,25 +171,24 @@ namespace WordleWPF.ViewModel
                 try
                 {
                     List<string> wordlist = File.ReadAllLines(_path).ToList();
-
                     if (wordlist.Count == 0)
                     {
-                        MessageBox.Show("Could not start the game because of an unexpected error, please contact the technical support.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        ShowErrorDialog(null);
                         _logger.Warn("Warn - the file containing the words is empty");
-                        App.Current.Shutdown();
                     }
 
                     else
                     {
                         gm = new Logic(wordlist.Where(word => word.Length <= 6).ToList());
                         WinnerWord = gm.ChooseRandomWord();
+                        WordLen = WinnerWord.Length;
                         _logger.Info("Info - game successfully initialized");
                         CreateList(_maxAttempt);
                     }
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show("An internal error occured, please contact the technical support");
+                    ShowErrorDialog(null);
                     _logger.Error($"Error - {e}");
                     App.Current.Shutdown();
                 }
@@ -236,12 +204,6 @@ namespace WordleWPF.ViewModel
             }
         }
 
-        private bool IsWordAttemptDuplicate(string word)
-        {
-            return _usedWords.Contains(word);
-        }
-
-
         private void VerifyWord(object? o)
         {
 
@@ -249,7 +211,8 @@ namespace WordleWPF.ViewModel
             {
                 WordAttempt = WordAttempt.ToLower().Replace(" ", "");
 
-                if (!IsWordAttemptDuplicate(WordAttempt))
+                // Se la parola è già stata inserita
+                if (!IsDuplicateWord(WordAttempt))
                 {
                     if (WordAttempt.Length == WinnerWord.Length)
                     {
@@ -279,13 +242,13 @@ namespace WordleWPF.ViewModel
                         if (gm.IsWinner(WordAttempt))
                         {
                             SetPoint();
-                            ShowWordleDialog(true);
+                            ShowResultDialog(true);
 
 
                         }
                         else if (_currentAttempt >= (_maxAttempt - 1))
                         {
-                            ShowWordleDialog(false);
+                            ShowResultDialog(false);
                         }
                         else
                         {
@@ -296,20 +259,34 @@ namespace WordleWPF.ViewModel
                 }
                 else
                 {
+                    // Se la parola è già presente in lista lancia l'evento
                     BlinkTextBox.Invoke();
+                    WordAttempt = "";
                 }
             }
             else
             {
-                MessageBox.Show("An internal error occured, please contact the technical support", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowErrorDialog(null);
                 _logger.Error($"WordAttempt is null = {WordAttempt == null} || WinnerWord is null = {WinnerWord == null}");
             }
         }
 
-        private void ShowWordleDialog(bool isWinner)
+        private bool IsDuplicateWord(string word)
+        {
+            return _usedWords.Contains(word);
+        }
+
+
+        private void ShowResultDialog(bool isWinner)
         {
             WordleDialog childwin = new((item) => { if (item) { RestartGameCommand.Execute(null); } else { Application.Current.Shutdown(); } }, WinnerWord, isWinner);
             childwin.Show();
+        }
+
+        private void ShowErrorDialog(string? ovveraidMessage)
+        {
+            WordleDialog errorDialog = new(Application.Current.Shutdown, ovveraidMessage);
+            errorDialog.ShowDialog();
         }
 
         private bool CanPressed(object? o)
