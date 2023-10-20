@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Timers;
 using System.Windows;
 using Wordle_Library;
@@ -212,7 +213,7 @@ namespace WordleWPF.ViewModel
                 WordAttempt = WordAttempt.ToLower().Replace(" ", "");
 
                 // Se la parola è già stata inserita
-                if (!IsDuplicateWord(WordAttempt))
+                if (!IsDuplicateWord(WordAttempt) && Regex.IsMatch(WordAttempt, @"^[a-zA-Z]+$"))
                 {
                     if (WordAttempt.Length == WinnerWord.Length)
                     {
@@ -260,6 +261,8 @@ namespace WordleWPF.ViewModel
                 else
                 {
                     // Se la parola è già presente in lista lancia l'evento
+                    //  string message = !Regex.IsMatch(WordAttempt, @"^[a-zA-Z]+$") ? "Attenzione, non puoi usare numeri o caratteri speciali" : "La parola è gia stata inserita";
+                    //ShowErrorDialog(message);
                     BlinkTextBox.Invoke();
                     WordAttempt = "";
                 }
@@ -275,7 +278,6 @@ namespace WordleWPF.ViewModel
         {
             return _usedWords.Contains(word);
         }
-
 
         private void ShowResultDialog(bool isWinner)
         {
