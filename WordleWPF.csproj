@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <Reference Include="Wordle-Library">
-      <HintPath>..\..\..\C# Exercises\Wordle\Wordle-Library\bin\Debug\net6.0\Wordle-Library.dll</HintPath>
+      <HintPath>..\..\ConsoleApp\Wordle\Wordle-Library\bin\Debug\net6.0\Wordle-Library.dll</HintPath>
     </Reference>
   </ItemGroup>
 
