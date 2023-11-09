@@ -231,7 +231,9 @@ namespace WordleWPF.ViewModel
                         attempt.SetViewCharacter(WordAttempt, currentPositionAttempt);
 
                         // Caricare la lista dei caratteri
-                        _wrongPositionChar.UnionWith(attempt.WrongPositionChar);
+                        //_wrongPositionChar.UnionWith(attempt.WrongPositionChar);
+
+                        _wrongPositionChar = (attempt.WrongPositionChar);
                         _missingPositionChar.UnionWith(attempt.MissingPositionChar);
 
                         OnPropertyChanged(nameof(WrongPositionChar));

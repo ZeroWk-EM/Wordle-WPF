@@ -65,12 +65,6 @@ namespace WordleWPF.ViewModel
                 attempt.Value = word[i];
                 attempt.CellPosition = rowAttempt[i];
 
-                //if (attempt.CellPosition == Position.Ok)
-                //{
-                //    _wrongPositionChar.Remove(attempt.Value);
-                //    OnPropertyChanged(nameof(WrongPositionChar));
-                //}
-                //else
                 if (attempt.CellPosition == Position.Wrong)
                 {
                     _wrongPositionChar.Add(attempt.Value);
@@ -80,6 +74,11 @@ namespace WordleWPF.ViewModel
                 {
                     _missingPositionChar.Add(attempt.Value);
                     OnPropertyChanged(nameof(MissingPositionChar));
+                }
+                else if (WrongPositionChar.Contains(attempt.Value) && attempt.CellPosition == Position.Ok)
+                {
+                    _wrongPositionChar.Remove(attempt.Value);
+                    OnPropertyChanged(nameof(WrongPositionChar));
                 }
                 i++;
             }
