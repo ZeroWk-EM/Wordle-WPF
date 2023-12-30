@@ -1,0 +1,79 @@
+﻿<Window
+    x:Class="WordleWPF.View.WordleDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:WordleWPF.Resources"
+    xmlns:viewmodels="clr-namespace:WordleWPF.ViewModels"
+    Title="{Binding Title}"
+    Width="350"
+    Height="180"
+    d:DataContext="{d:DesignInstance Type=viewmodels:DialogViewModel}"
+    ResizeMode="NoResize"
+    Topmost="True"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Style.xaml" />
+                <ResourceDictionary Source="../Resources/Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Background="{StaticResource MainBackground}">
+        <Border
+            Background="{StaticResource GameWindow}"
+            BorderThickness="10"
+            CornerRadius="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel
+                    Grid.Row="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center">
+                    <TextBlock
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Foreground="{StaticResource MainText}"
+                        Text="{Binding Paragraph}">
+                        <TextBlock.TextWrapping>
+                            Wrap
+                        </TextBlock.TextWrapping>
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Button
+                            x:Name="AcceptButton"
+                            Grid.Column="0"
+                            Height="40"
+                            Margin="10"
+                            Command="{Binding YesButtonCommand}"
+                            Content="{x:Static resx:Resources.YesButton}"
+                            Foreground="{StaticResource MainText}"
+                            Style="{DynamicResource RoundedButton}" />
+                        <Button
+                            x:Name="DenialButton"
+                            Grid.Column="1"
+                            Height="40"
+                            Margin="10"
+                            Command="{Binding NoButtonCommand}"
+                            Content="{x:Static resx:Resources.NoButton}"
+                            Foreground="{StaticResource MainText}"
+                            Style="{DynamicResource RoundedButton}" />
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
